@@ -1,0 +1,13 @@
+exports.up = function (knex) {
+  return knex.schema.createTable('movies', (table) => {
+    table.increments('movie_id').primary()   //movie_id: (Primary Key) A unique ID for the movie.
+    table.string('title')
+    table.integer('runtime_in_minutes')
+    table.string('rating')
+    table.text('description')
+    table.string('image_url')
+    table.timestamps(true, true) // Adds created_at and updated_at columns
+  })
+}
+
+exports.down = function (knex) {}
