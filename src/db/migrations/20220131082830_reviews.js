@@ -1,15 +1,24 @@
+exports.up = function (knex) {
+  return knex.schema.createTable('reviews', (table) => {
+    table.increments('review_id').primary() //movie_id: (Primary Key) A unique ID for the movie.
+    table.text('content')
+    table.integer('score')
+    table.integer('critic_id').unsigned().notNullable()
+    table
+      .foreign('critic_id')
+      .references('critic_id')
+      .inTable('critics')
+      .onDelete('cascade')
+    table.integer('movie_id').unsigned().notNullable()
+    table
+      .foreign('movie_id')
+      .references('movie_id')
+      .inTable('movies')
+      .onDelete('cascade')
+    table.timestamps(true, true) // Adds created_at and updated_at columns
+  })
+}
 
-exports.up = function(knex) {
-    return knex.schema.createTable('movies', (table) => {
-        table.increments('review_id').primary()   //movie_id: (Primary Key) A unique ID for the movie.
-        table.text('content')
-        table.integer('score')
-        table.foreign('critic_id')
-        table.foreign('movie_id')
-        table.timestamps(true, true) // Adds created_at and updated_at columns
-      })
-};
-
-exports.down = function(knex) {
-  
-};
+exports.down = function (knex) {
+  return knex.schema.dropTable('reviews')
+}

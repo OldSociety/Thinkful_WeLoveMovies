@@ -1,6 +1,6 @@
 
 exports.up = function(knex) {
-    return knex.schema.createTable('movies', (table) => {
+    return knex.schema.createTable('theaters', (table) => {
         table.increments('theater_id').primary()   //movie_id: (Primary Key) A unique ID for the movie.
         table.string('name')
         table.string('address_line_1')
@@ -12,6 +12,6 @@ exports.up = function(knex) {
       })
 };
 
-exports.down = function(knex) {
-  
+exports.down = function (knex) {
+  return knex.schema.dropTable("theaters");
 };
