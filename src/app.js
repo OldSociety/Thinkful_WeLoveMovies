@@ -3,12 +3,15 @@ const express = require("express");
 const cors = require("cors");
 
 const moviesRouter = require("./movies/movies.router");
+const theatersRouter = require("./theaters/theaters.router");
+const reviewsRouter = require("./reviews/reviews.router");
 const errorHandler = require("./errors/errorHandler");
 const notFound = require("./errors/notFound");
 const morgan = require("morgan")
 
 const app = express();
 
+app.set("json spaces", 2) //make json more readable
 
 //Middleware
 app.use(morgan("dev"))
@@ -18,6 +21,8 @@ app.use(express.json());
 
 //Routes
 app.use("/movies", moviesRouter);
+app.use("/theaters", theatersRouter)
+app.use("/reviews", reviewsRouter)
 
 //Error Handling
 app.use(notFound);

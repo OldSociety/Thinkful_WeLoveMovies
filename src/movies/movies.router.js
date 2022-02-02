@@ -1,12 +1,13 @@
 const router = require('express').Router()
 const controller = require('./movies.controller.js')
-// const theatersRouter = require('../theaters/theaters.controller.js')
-// const reviewsRouter = require('../reviews/reviews.controller.js')
+const theatersRouter = require('../theaters/theaters.router.js')
+const reviewsRouter = require('../reviews/reviews.router.js')
 const methodNotAllowed = require('../errors/methodNotAllowed')
+
 //const cors = require('cors')
 
-// router.use("/:urlId/theaters", usesRouter)
-// router.use("/:urlId/reviews", usesRouter)
+router.use("/:movies/theaters", theatersRouter)
+router.use("/:movieId/reviews", reviewsRouter)
 
 router
   .route('/movies?is_showing=true')
