@@ -1,41 +1,32 @@
-const reviewsService = require('./reviews.services')
-const asyncErrorBoundary = require('../errors/asyncErrorBoundary')
-//const knex = require('../db/connection.js');
+const service = require("./reviews.services");
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
-
-
-async function list(req, res, next) {
-  reviewsService
-    .list()
-    .then((data) => res.json({ data }))
-    .catch(next)
+async function reviewExists(req, res, next) {
+  const { reviewId } = req.params;
+  const review = await service.read(reviewId);
+  if (review) {
+    res.locals.review = review;
+    return next();
+  }
+  next({ status: 404, message: `Review cannot be found` });
 }
 
-function reviewExists(req, res, next) {
-    reviewsService
-      .read(req.params.movieId)
-      .then((review) => {
-        if (review) {
-          res.locals.review = review
-          return next()
-        }
-        next({ status: 404, message: `Review cannot be found.` })
-      })
-      .catch(next)
-  }
-
-function destroy(req, res) {
-  const { review: data } = res.locals
-  res.json({ data })
+async function update(req, res) {
+  const updatedReview = {
+    ...req.body.data,
+    review_id: res.locals.review.review_id,
+  };
+  const data = await service.update(updatedReview);
+  res.json({ data });
 }
 
-function read(req, res) {
-    const { review: data } = res.locals
-    res.json({ data })
-  }
+async function destroy(req, res) {
+  const { review } = res.locals;
+  await service.delete(review.review_id);
+  res.sendStatus(204);
+}
 
 module.exports = {
-  read: [reviewExists, asyncErrorBoundary(read)],
-  list: asyncErrorBoundary(list),
-  delete: [reviewExists, asyncErrorBoundary(destroy)]
-}
+  update: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(update)],
+  delete: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(destroy)],
+};

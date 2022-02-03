@@ -1,26 +1,11 @@
-const theatersService = require('./theaters.services.js')
-const asyncErrorBoundary = require('../errors/asyncErrorBoundary')
-//const knex = require('../db/connection.js');
+const service = require("./theaters.services")
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
 
-async function list(req, res, next) {
-  theatersService
-    .list()
-    .then((data) => res.json({ data }))
-    .catch(next)
+async function list(req, res){
+  const data = await service.list()  
+  res.json({data})
 }
 
-function destroy(req, res) {
-    const { theater: data } = res.locals
-    res.json({ data })
-  }
-  
-  function read(req, res) {
-      const { theater: data } = res.locals
-      res.json({ data })
-    }
-
 module.exports = {
-    read: [asyncErrorBoundary(read)],
-    list: asyncErrorBoundary(list),
-    delete: [asyncErrorBoundary(destroy)]
-  }
+  list: asyncErrorBoundary(list)
+}
