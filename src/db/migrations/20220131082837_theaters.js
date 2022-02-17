@@ -1,7 +1,7 @@
 
 exports.up = function(knex) {
     return knex.schema.createTable('theaters', (table) => {
-        table.increments('theater_id').primary()   //movie_id: (Primary Key) A unique ID for the movie.
+        table.increments('theater_id').primary()   //theater_id: (Primary Key) A unique ID for the theater.
         table.string('name')
         table.string('address_line_1')
         table.string('address_line_2')

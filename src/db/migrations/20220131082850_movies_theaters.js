@@ -5,7 +5,7 @@ exports.up = function (knex) {
       .foreign('movie_id')
       .references('movie_id')
       .inTable('movies')
-      .onDelete('cascade') //movie_id: (Primary Key) A unique ID for the movie.
+      .onDelete('cascade') 
       table.integer("theater_id").unsigned().notNullable();
       table
       .foreign('theater_id')
